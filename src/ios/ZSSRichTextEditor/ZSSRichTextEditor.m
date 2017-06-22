@@ -1217,7 +1217,8 @@ static CGFloat kDefaultScale = 0.5;
     HRColorPickerViewController *colorPicker = [HRColorPickerViewController cancelableFullColorPickerViewControllerWithColor:[UIColor whiteColor]];
     colorPicker.delegate = self;
     colorPicker.tag = 1;
-    colorPicker.title = NSLocalizedString(@"Text Color", nil);
+    //colorPicker.title = NSLocalizedString(@"Text Color", nil);
+    colorPicker.title = NSLocalizedString(@"文本颜色", nil);
     [self.navigationController pushViewController:colorPicker animated:YES];
     
 }
@@ -1231,7 +1232,8 @@ static CGFloat kDefaultScale = 0.5;
     HRColorPickerViewController *colorPicker = [HRColorPickerViewController cancelableFullColorPickerViewControllerWithColor:[UIColor whiteColor]];
     colorPicker.delegate = self;
     colorPicker.tag = 2;
-    colorPicker.title = NSLocalizedString(@"BG Color", nil);
+    //colorPicker.title = NSLocalizedString(@"BG Color", nil);
+    colorPicker.title = NSLocalizedString(@"背景颜色", nil);
     [self.navigationController pushViewController:colorPicker animated:YES];
     
 }

@@ -52,14 +52,24 @@
 
 - (void)setUpNavigation {
     
-    self.navigationItem.title = @"Fonts";
+    self.navigationItem.title = @"字体";
+    //self.navigationItem.title = @"Fonts";
     
     UIBarButtonItem *buttonItem;
-    
-    buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
+    buttonItem = [[UIBarButtonItem alloc]
+                   initWithTitle:@"取消"
+                   style:UIBarButtonItemStylePlain
+                   target:self
+                   action:@selector(cancel:)];
+    //buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
     self.navigationItem.leftBarButtonItem = buttonItem;
     
-    buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save:)];
+    buttonItem = [[UIBarButtonItem alloc]
+                  initWithTitle:@"保存"
+                  style:UIBarButtonItemStylePlain
+                  target:self
+                  action:@selector(save:)];
+    //buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save:)];
     self.navigationItem.rightBarButtonItem = buttonItem;
     
 }
