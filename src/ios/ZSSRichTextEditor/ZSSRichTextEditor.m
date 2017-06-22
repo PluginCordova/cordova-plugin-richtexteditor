@@ -280,6 +280,7 @@ static CGFloat kDefaultScale = 0.5;
         
         // Use a toolbar so that we can tint
         UIToolbar *keyboardToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(-7, -1, 44, 44)];
+        keyboardToolbar.backgroundColor = [UIColor whiteColor];
         [toolbarCropper addSubview:keyboardToolbar];
         
         self.keyboardItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ZSSkeyboard.png"] style:UIBarButtonItemStylePlain target:self action:@selector(dismissKeyboard)];
@@ -392,6 +393,7 @@ static CGFloat kDefaultScale = 0.5;
     
     //Background Toolbar
     UIToolbar *backgroundToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+    backgroundToolbar.backgroundColor = [UIColor whiteColor];
     backgroundToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
     //Parent holding view

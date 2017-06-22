@@ -14,16 +14,19 @@
     
     NSString *html = [options objectForKey:@"html"];
     
-    EditorViewController *editor = [EditorViewController alloc] initWithHtml:html];
+    EditorViewController *editor = [[EditorViewController alloc] initWithHtml:html];
     
     editor.editDoneBlock = ^(NSDictionary *result){
-
+        
         CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:result];
-    
+        
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     };
+    
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:editor];
+    nav.navigationBar.translucent = NO;
 
-    [[self getTopPresentedViewController] presentViewController:editor animated:YES completion:nil];
+    [[self getTopPresentedViewController] presentViewController:nav animated:YES completion:nil];
 }
 
 -(UIViewController *)getTopPresentedViewController {
