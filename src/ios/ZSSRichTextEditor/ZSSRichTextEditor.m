@@ -460,6 +460,7 @@ static CGFloat kDefaultScale = 0.5;
     // Update the color
     for (ZSSBarButtonItem *item in self.toolbar.items) {
         item.tintColor = [self barButtonItemDefaultColor];
+    
     }
     self.keyboardItem.tintColor = toolbarItemTintColor;
     
@@ -471,6 +472,7 @@ static CGFloat kDefaultScale = 0.5;
     _toolbarItemSelectedTintColor = toolbarItemSelectedTintColor;
     
 }
+
 
 - (NSArray *)itemsForToolbar {
     
@@ -1273,7 +1275,8 @@ static CGFloat kDefaultScale = 0.5;
 - (void)showInsertLinkDialogWithLink:(NSString *)url title:(NSString *)title {
     
     // Insert Button Title
-    NSString *insertButtonTitle = !self.selectedLinkURL ? NSLocalizedString(@"Insert", nil) : NSLocalizedString(@"Update", nil);
+    NSString *insertButtonTitle = !self.selectedLinkURL ? NSLocalizedString(@"添加", nil) : NSLocalizedString(@"更新", nil);
+    //NSString *insertButtonTitle = !self.selectedLinkURL ? NSLocalizedString(@"Insert", nil) : NSLocalizedString(@"Update", nil);
     
     // Picker Button
     UIButton *am = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -1283,9 +1286,12 @@ static CGFloat kDefaultScale = 0.5;
     
     if ([NSProcessInfo instancesRespondToSelector:@selector(isOperatingSystemAtLeastVersion:)]) {
         
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Insert Link", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"添加链接", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
+        //UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Insert Link", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.placeholder = NSLocalizedString(@"URL (required)", nil);
+            textField.placeholder = NSLocalizedString(@"链接地址 (必填)", nil);
+        //[alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+            //textField.placeholder = NSLocalizedString(@"URL (required)", nil);
             if (url) {
                 textField.text = url;
             }
@@ -1294,16 +1300,20 @@ static CGFloat kDefaultScale = 0.5;
             textField.clearButtonMode = UITextFieldViewModeAlways;
         }];
         [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
-            textField.placeholder = NSLocalizedString(@"Title", nil);
+            textField.placeholder = NSLocalizedString(@"文字描述", nil);
+            //textField.placeholder = NSLocalizedString(@"Title", nil);
             textField.clearButtonMode = UITextFieldViewModeAlways;
             textField.secureTextEntry = NO;
             if (title) {
                 textField.text = title;
             }
         }];
-        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"取消", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
             [self focusTextEditor];
         }]];
+//        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+//            [self focusTextEditor];
+//        }]];
         [alertController addAction:[UIAlertAction actionWithTitle:insertButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             
             UITextField *linkURL = [alertController.textFields objectAtIndex:0];
@@ -1320,11 +1330,11 @@ static CGFloat kDefaultScale = 0.5;
         
     } else {
         
-        self.alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Insert Link", nil) message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:insertButtonTitle, nil];
+        self.alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"添加链接", nil) message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"取消", nil) otherButtonTitles:insertButtonTitle, nil];
         self.alertView.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
         self.alertView.tag = 2;
         UITextField *linkURL = [self.alertView textFieldAtIndex:0];
-        linkURL.placeholder = NSLocalizedString(@"URL (required)", nil);
+        linkURL.placeholder = NSLocalizedString(@"链接地址 (必填)", nil);
         if (url) {
             linkURL.text = url;
         }
@@ -1334,7 +1344,7 @@ static CGFloat kDefaultScale = 0.5;
         
         UITextField *alt = [self.alertView textFieldAtIndex:1];
         alt.secureTextEntry = NO;
-        alt.placeholder = NSLocalizedString(@"Title", nil);
+        alt.placeholder = NSLocalizedString(@"文字描述", nil);
         if (title) {
             alt.text = title;
         }
