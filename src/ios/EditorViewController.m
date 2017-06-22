@@ -89,6 +89,8 @@
     
     self.shouldShowKeyboard = YES;
     
+    self.enabledSelectAll = YES;
+    
     // Set the HTML contents of the editor
     [self setHTML:_html];
     

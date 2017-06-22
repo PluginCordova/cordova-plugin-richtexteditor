@@ -111,6 +111,8 @@ static Class hackishFixClass = Nil;
  */
 @property (nonatomic, strong) UIWebView *editorView;
 
+@property (nonatomic, strong) UIButton *selectAllBtn;
+
 /*
  *  ZSSTextView for displaying the source code for what is displayed in the editor view
  */
@@ -246,6 +248,8 @@ static CGFloat kDefaultScale = 0.5;
     self.shouldShowKeyboard = YES;
     self.formatHTML = YES;
     
+    self.enabledSelectAll = YES;
+    
     //Initalise enabled toolbar items array
     self.enabledToolbarItems = [[NSArray alloc] init];
     
@@ -296,6 +300,8 @@ static CGFloat kDefaultScale = 0.5;
     
     [self.view addSubview:self.toolbarHolder];
     
+    [self createSelectAllBtn];
+    
     //Build the toolbar
     [self buildToolbar];
     
@@ -306,6 +312,28 @@ static CGFloat kDefaultScale = 0.5;
         
     }
     
+}
+
+-(void)createSelectAllBtn{
+    if (_enabledSelectAll) {
+        CGFloat y = self.editorView.frame.origin.y + self.editorView.frame.size.height - 40;
+        _selectAllBtn = [[UIButton alloc] initWithFrame:CGRectMake(10, y, 50, 24)];
+        _selectAllBtn.autoresizingMask =  UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleBottomMargin;
+        //_selectAllBtn.autoresizingMask =  UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+        _selectAllBtn.backgroundColor = [UIColor colorWithRed:229/255.0 green:227/255.0 blue:227/255.0 alpha:1];
+        _selectAllBtn.layer.cornerRadius = 12;
+        
+        
+        _selectAllBtn.layer.masksToBounds = YES;
+        [_selectAllBtn setTitle:@"全选" forState:UIControlStateNormal];
+        _selectAllBtn.titleLabel.font = [UIFont systemFontOfSize:12];
+        [_selectAllBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        _selectAllBtn.showsTouchWhenHighlighted = YES;
+        [_selectAllBtn addTarget:self action:@selector(selectall:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self.editorView addSubview:_selectAllBtn];
+
+    }
 }
 
 #pragma mark - View Will Appear Section
@@ -460,12 +488,10 @@ static CGFloat kDefaultScale = 0.5;
     // Update the color
     for (ZSSBarButtonItem *item in self.toolbar.items) {
         item.tintColor = [self barButtonItemDefaultColor];
-    
     }
     self.keyboardItem.tintColor = toolbarItemTintColor;
     
 }
-
 
 - (void)setToolbarItemSelectedTintColor:(UIColor *)toolbarItemSelectedTintColor {
     
@@ -473,6 +499,10 @@ static CGFloat kDefaultScale = 0.5;
     
 }
 
+-(void)setEnabledSelectAll:(BOOL)enabledSelectAll{
+    
+    _enabledSelectAll = enabledSelectAll;
+}
 
 - (NSArray *)itemsForToolbar {
     
@@ -1595,6 +1625,11 @@ static CGFloat kDefaultScale = 0.5;
     [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
 }
 
+-(void)selectall:(UIButton *)sender{
+    NSString *trigger = @"zss_editor.selectAll();";
+    [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
+}
+
 
 - (void)updateToolBarWithButtonName:(NSString *)name {
     
@@ -1966,6 +2001,11 @@ static CGFloat kDefaultScale = 0.5;
             self.editorView.scrollView.contentInset = UIEdgeInsetsZero;
             self.editorView.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
             
+            CGRect selectAllBtnFrame = self.selectAllBtn.frame;
+            frame.origin.y = self.editorView.frame.origin.y + self.editorView.frame.size.height - 40;
+            self.selectAllBtn.frame = selectAllBtnFrame;
+            
+            
             // Source View
             CGRect sourceFrame = self.sourceView.frame;
             sourceFrame.size.height = (self.view.frame.size.height - keyboardHeight) - sizeOfToolbar - extraHeight;
@@ -2004,6 +2044,10 @@ static CGFloat kDefaultScale = 0.5;
             self.editorViewFrame = self.editorView.frame;
             self.editorView.scrollView.contentInset = UIEdgeInsetsZero;
             self.editorView.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
+            
+            CGRect selectAllBtnFrame = self.selectAllBtn.frame;
+            frame.origin.y = self.editorView.frame.origin.y + self.editorView.frame.size.height - 40;
+            self.selectAllBtn.frame = selectAllBtnFrame;
             
             // Source View
             CGRect sourceFrame = self.sourceView.frame;

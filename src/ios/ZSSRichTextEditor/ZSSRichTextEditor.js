@@ -181,6 +181,10 @@ zss_editor.restorerange = function(){
     selection.addRange(range);
 }
 
+zss_editor.selectAll = function(){
+    document.execCommand('selectall', true, null);
+}
+
 zss_editor.getSelectedNode = function() {
     var node,selection;
     if (window.getSelection) {
