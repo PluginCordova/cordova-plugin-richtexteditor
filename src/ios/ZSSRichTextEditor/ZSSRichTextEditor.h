@@ -94,6 +94,16 @@ static NSString * const ZSSRichTextEditorToolbarFonts = @"com.zedsaid.toolbarite
 @property (nonatomic, strong) NSArray *enabledToolbarItems;
 
 /**
+ *  selectAll  enable
+ */
+@property (nonatomic) BOOL enabledSelectAll;
+
+/**
+ *  custom  insert link
+ */
+@property (nonatomic) BOOL customInsertLink;
+
+/**
  *  Color to tint the toolbar items
  */
 @property (nonatomic, strong) UIColor *toolbarItemTintColor;
