@@ -65,7 +65,7 @@
                                  ZSSRichTextEditorToolbarOutdent,
                                  //ZSSRichTextEditorToolbarInsertImage,
                                  //ZSSRichTextEditorToolbarInsertImageFromDevice,
-                                  ZSSRichTextEditorToolbarInsertLink,
+                                 //ZSSRichTextEditorToolbarInsertLink,
                                   //ZSSRichTextEditorToolbarRemoveLink,
                                   //ZSSRichTextEditorToolbarQuickLink
                                   
@@ -90,6 +90,8 @@
     self.shouldShowKeyboard = YES;
     
     self.enabledSelectAll = YES;
+    
+    self.customInsertLink = YES;
     
     // Set the HTML contents of the editor
     [self setHTML:_html];

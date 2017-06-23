@@ -111,7 +111,7 @@ static Class hackishFixClass = Nil;
  */
 @property (nonatomic, strong) UIWebView *editorView;
 
-@property (nonatomic, strong) UIButton *selectAllBtn;
+@property (nonatomic, strong) UIView *customBtnBgView;
 
 /*
  *  ZSSTextView for displaying the source code for what is displayed in the editor view
@@ -250,6 +250,8 @@ static CGFloat kDefaultScale = 0.5;
     
     self.enabledSelectAll = YES;
     
+    self.customInsertLink = YES;
+    
     //Initalise enabled toolbar items array
     self.enabledToolbarItems = [[NSArray alloc] init];
     
@@ -261,6 +263,8 @@ static CGFloat kDefaultScale = 0.5;
     
     //Editor View
     [self createEditorViewWithFrame:frame];
+    
+     [self createCustomBtnBgView];
     
     //Image Picker used to allow the user insert images from the device (base64 encoded)
     [self setUpImagePicker];
@@ -298,10 +302,6 @@ static CGFloat kDefaultScale = 0.5;
         
     }
     
-    [self.view addSubview:self.toolbarHolder];
-    
-    [self createSelectAllBtn];
-    
     //Build the toolbar
     [self buildToolbar];
     
@@ -314,10 +314,44 @@ static CGFloat kDefaultScale = 0.5;
     
 }
 
+-(void)createCustomBtnBgView{
+    
+    _customBtnBgView = [[UIView alloc] init];
+    
+    _customBtnBgView.autoresizingMask =  UIViewAutoresizingFlexibleWidth ;
+    
+    //_customBtnBgView.autoresizingMask =  UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+
+    
+    CGFloat height = 44;
+    
+    
+    if (_enabledSelectAll || _customInsertLink) {
+        
+        //CGFloat y = self.toolbarHolder.frame.origin.y - 40;
+        
+        height = 84;
+
+    }
+    if (_alwaysShowToolbar) {
+        _customBtnBgView.frame = CGRectMake(0, self.view.frame.size.height - 84, self.view.frame.size.width, 84);
+    } else {
+        _customBtnBgView.frame = CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 84);
+    }
+    
+    [self.view addSubview:_customBtnBgView];
+    
+    [self createSelectAllBtn];
+    
+    [self createCustomInsertLink];
+    
+    
+}
+
 -(void)createSelectAllBtn{
     if (_enabledSelectAll) {
-        CGFloat y = self.editorView.frame.origin.y + self.editorView.frame.size.height - 40;
-        _selectAllBtn = [[UIButton alloc] initWithFrame:CGRectMake(10, y, 50, 24)];
+        //CGFloat y = self.editorView.frame.origin.y + self.editorView.frame.size.height - 40;
+        UIButton *_selectAllBtn = [[UIButton alloc] initWithFrame:CGRectMake(10, 5, 50, 24)];
         _selectAllBtn.autoresizingMask =  UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleBottomMargin;
         //_selectAllBtn.autoresizingMask =  UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
         _selectAllBtn.backgroundColor = [UIColor colorWithRed:229/255.0 green:227/255.0 blue:227/255.0 alpha:1];
@@ -331,8 +365,38 @@ static CGFloat kDefaultScale = 0.5;
         _selectAllBtn.showsTouchWhenHighlighted = YES;
         [_selectAllBtn addTarget:self action:@selector(selectall:) forControlEvents:UIControlEventTouchUpInside];
         
-        [self.editorView addSubview:_selectAllBtn];
+        [self.customBtnBgView addSubview:_selectAllBtn];
 
+    }
+}
+
+-(void)createCustomInsertLink{
+    if (_customInsertLink) {
+        CGFloat x = self.customBtnBgView.frame.origin.x + self.customBtnBgView.frame.size.width - 100;
+        //CGFloat y = self.editorView.frame.origin.y + self.editorView.frame.size.height - 40;
+        UIButton * _customInsertLinkBtn = [[UIButton alloc] initWithFrame:CGRectMake(x, 5, 90, 24)];
+        _customInsertLinkBtn.autoresizingMask =  UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleBottomMargin;
+        //_selectAllBtn.autoresizingMask =  UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+        _customInsertLinkBtn.backgroundColor = [UIColor colorWithRed:229/255.0 green:227/255.0 blue:227/255.0 alpha:1];
+        _customInsertLinkBtn.layer.cornerRadius = 12;
+        
+        
+        _customInsertLinkBtn.layer.masksToBounds = YES;
+        [_customInsertLinkBtn setTintColor:[UIColor blackColor]];
+         NSBundle* bundle = [NSBundle bundleForClass:[ZSSRichTextEditor class]];
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ZSSlink.png" inBundle:bundle compatibleWithTraitCollection:nil]];
+        imageView.frame = CGRectMake(7, 3, 20, 18);
+        //_selectAllBtn.autoresizingMask =  UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+        [_customInsertLinkBtn addSubview:imageView];
+        UILabel *titleLbl = [[UILabel alloc] initWithFrame:CGRectMake(28, 0, 60, 24)];
+        titleLbl.text = @"添加链接";
+        titleLbl.font = [UIFont systemFontOfSize:12];
+        [_customInsertLinkBtn addSubview:titleLbl];
+        _customInsertLinkBtn.showsTouchWhenHighlighted = YES;
+        [_customInsertLinkBtn addTarget:self action:@selector(insertLink) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self.customBtnBgView addSubview:_customInsertLinkBtn];
+        
     }
 }
 
@@ -411,6 +475,7 @@ static CGFloat kDefaultScale = 0.5;
     
     self.toolbar = [[UIToolbar alloc] initWithFrame:CGRectZero];
     self.toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    //self.toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     self.toolbar.backgroundColor = [UIColor clearColor];
     [self.toolBarScroll addSubview:self.toolbar];
     self.toolBarScroll.autoresizingMask = self.toolbar.autoresizingMask;
@@ -427,15 +492,19 @@ static CGFloat kDefaultScale = 0.5;
     //Parent holding view
     self.toolbarHolder = [[UIView alloc] init];
     
-    if (_alwaysShowToolbar) {
-        self.toolbarHolder.frame = CGRectMake(0, self.view.frame.size.height - 44, self.view.frame.size.width, 44);
-    } else {
-        self.toolbarHolder.frame = CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 44);
-    }
+    CGFloat y = 0;
     
+    if (_customInsertLink || _enabledSelectAll) {
+        
+        y = 40;
+    }
+    self.toolbarHolder.frame = CGRectMake(0, y, self.customBtnBgView.frame.size.width, 44);
+
     self.toolbarHolder.autoresizingMask = self.toolbar.autoresizingMask;
     [self.toolbarHolder addSubview:self.toolBarScroll];
     [self.toolbarHolder insertSubview:backgroundToolbar atIndex:0];
+    
+     [_customBtnBgView addSubview:self.toolbarHolder];
     
 }
 
@@ -1973,7 +2042,7 @@ static CGFloat kDefaultScale = 0.5;
     CGRect keyboardEnd = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     
     // Toolbar Sizes
-    CGFloat sizeOfToolbar = self.toolbarHolder.frame.size.height;
+    CGFloat sizeOfToolbar = self.customBtnBgView.frame.size.height;
     
     // Keyboard Size
     //Checks if IOS8, gets correct keyboard height
@@ -1982,16 +2051,25 @@ static CGFloat kDefaultScale = 0.5;
     // Correct Curve
     UIViewAnimationOptions animationOptions = curve << 16;
     
-    const int extraHeight = 10;
+    int tempExtraHeight = 10;
+    
+    if (_enabledSelectAll || _customInsertLink) {
+        
+        tempExtraHeight = 0;
+        
+    }
+    
+    const int extraHeight = tempExtraHeight;
     
     if ([notification.name isEqualToString:UIKeyboardWillShowNotification]) {
         
         [UIView animateWithDuration:duration delay:0 options:animationOptions animations:^{
             
             // Toolbar
-            CGRect frame = self.toolbarHolder.frame;
-            frame.origin.y = self.view.frame.size.height - (keyboardHeight + sizeOfToolbar);
-            self.toolbarHolder.frame = frame;
+            CGRect frame = self.customBtnBgView.frame;
+            CGFloat bgheight = self.customBtnBgView.frame.size.height;
+            frame.origin.y = self.view.frame.size.height - (keyboardHeight + bgheight);
+            self.customBtnBgView.frame = frame;
             
             // Editor View
             CGRect editorFrame = self.editorView.frame;
@@ -2000,10 +2078,6 @@ static CGFloat kDefaultScale = 0.5;
             self.editorViewFrame = self.editorView.frame;
             self.editorView.scrollView.contentInset = UIEdgeInsetsZero;
             self.editorView.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
-            
-            CGRect selectAllBtnFrame = self.selectAllBtn.frame;
-            frame.origin.y = self.editorView.frame.origin.y + self.editorView.frame.size.height - 40;
-            self.selectAllBtn.frame = selectAllBtnFrame;
             
             
             // Source View
@@ -2021,15 +2095,15 @@ static CGFloat kDefaultScale = 0.5;
         
         [UIView animateWithDuration:duration delay:0 options:animationOptions animations:^{
             
-            CGRect frame = self.toolbarHolder.frame;
-            
+            // Toolbar
+            CGRect frame = self.customBtnBgView.frame;
             if (_alwaysShowToolbar) {
                 frame.origin.y = self.view.frame.size.height - sizeOfToolbar;
             } else {
-                frame.origin.y = self.view.frame.size.height + keyboardHeight;
+                frame.origin.y = self.view.frame.size.height;
             }
+            self.customBtnBgView.frame = frame;
             
-            self.toolbarHolder.frame = frame;
             
             // Editor View
             CGRect editorFrame = self.editorView.frame;
@@ -2045,9 +2119,6 @@ static CGFloat kDefaultScale = 0.5;
             self.editorView.scrollView.contentInset = UIEdgeInsetsZero;
             self.editorView.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
             
-            CGRect selectAllBtnFrame = self.selectAllBtn.frame;
-            frame.origin.y = self.editorView.frame.origin.y + self.editorView.frame.size.height - 40;
-            self.selectAllBtn.frame = selectAllBtnFrame;
             
             // Source View
             CGRect sourceFrame = self.sourceView.frame;
