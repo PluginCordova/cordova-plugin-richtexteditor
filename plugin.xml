@@ -14,10 +14,11 @@
         <engine name="cordova" version=">=3.0.0" />
     </engines>
 
+    <js-module src="www/richtexteditor.js" name="RichTextEditor">
+        <clobbers target="cordova.plugins.richtexteditor" />
+    </js-module>
+
     <platform name="ios">
-        <js-module src="www/richtexteditor.js" name="RichTextEditor">
-            <clobbers target="cordova.plugins.richtexteditor" />
-        </js-module>
         <config-file target="config.xml" parent="/*">
             <feature name="RichTextEditor">
                 <param name="ios-package" value="RichTextEditor"/>
@@ -147,5 +148,23 @@
         <framework src="CoreText.framework" />
 
     </platform>
+
+    <!-- android -->
+	<platform name="android">
+		<config-file target="res/xml/config.xml" parent="/*">
+			<feature name="RichTextEditor">
+				<param name="android-package" value="com.actiontec.tiegushi.RichTextEditor"/>
+			</feature>
+		</config-file>
+
+    <framework src="src/android/hotshare_editor.gradle" custom="true" type="gradleReference" />
+
+    <resource-file src="src/android/libs/editor-release.aar" target="libs/editor-release.aar" />
+    <resource-file src="src/android/libs/utils-1.11.0.aar" target="libs/utils-1.11.0.aar" />
+    <resource-file src="src/android/libs/design-23.4.0.aar" target="libs/design-23.4.0.aar" />
+    <resource-file src="src/android/libs/constraint-layout-1.0.2.aar" target="libs/constraint-layout-1.0.2.aar" />
+
+		<source-file src="src/android/RichTextEditor.java" target-dir="src/com/actiontec/tiegushi" />
+	</platform>
 
 </plugin>
