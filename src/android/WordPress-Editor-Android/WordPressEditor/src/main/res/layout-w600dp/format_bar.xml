@@ -122,7 +122,7 @@
                 android:tag="@string/format_bar_tag_blockquote"/>
         </LinearLayout>
 
-        <LinearLayout
+        <!--<LinearLayout
             style="@style/FormatBarTabletGroup"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
@@ -135,6 +135,6 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/format_bar_description_html"
                 android:background="@drawable/format_bar_button_html_selector"/>
-        </LinearLayout>
+        </LinearLayout>-->
     </LinearLayout>
 </LinearLayout>

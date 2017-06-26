@@ -480,8 +480,8 @@ public class HotShareEditorFragment extends EditorFragmentAbstract implements Vi
                 }
 
                 if (mSourceView.getVisibility() == View.VISIBLE) {
-                    ToggleButton htmlButton = (ToggleButton) formatBar.findViewById(R.id.format_bar_button_html);
-                    htmlButton.setChecked(true);
+                    /*ToggleButton htmlButton = (ToggleButton) formatBar.findViewById(R.id.format_bar_button_html);
+                    htmlButton.setChecked(true);*/
                 }
             }
 
@@ -543,8 +543,8 @@ public class HotShareEditorFragment extends EditorFragmentAbstract implements Vi
         ToggleButton linkButton = (ToggleButton) view.findViewById(R.id.format_bar_button_link);
         mTagToggleButtonMap.put(TAG_FORMAT_BAR_BUTTON_LINK, linkButton);
 
-        ToggleButton htmlButton = (ToggleButton) view.findViewById(R.id.format_bar_button_html);
-        htmlButton.setOnClickListener(this);
+        /*ToggleButton htmlButton = (ToggleButton) view.findViewById(R.id.format_bar_button_html);
+        htmlButton.setOnClickListener(this);*/
 
         for (ToggleButton button : mTagToggleButtonMap.values()) {
             button.setOnClickListener(this);
@@ -761,9 +761,9 @@ public class HotShareEditorFragment extends EditorFragmentAbstract implements Vi
         }
 
         int id = v.getId();
-        if (id == R.id.format_bar_button_html) {
+        /*if (id == R.id.format_bar_button_html) {
             checkForFailedUploadAndSwitchToHtmlMode((ToggleButton) v);
-        } else if (id == R.id.format_bar_button_media) {
+        } else*/ if (id == R.id.format_bar_button_media) {
             mEditorFragmentListener.onTrackableEvent(TrackableEvent.MEDIA_BUTTON_TAPPED);
             ((ToggleButton) v).setChecked(false);
 
@@ -1234,8 +1234,8 @@ public class HotShareEditorFragment extends EditorFragmentAbstract implements Vi
                 hideActionBarIfNeeded();
 
                 // Reset all format bar buttons (in case they remained active through activity re-creation)
-                ToggleButton htmlButton = (ToggleButton) getActivity().findViewById(R.id.format_bar_button_html);
-                htmlButton.setChecked(false);
+                /*ToggleButton htmlButton = (ToggleButton) getActivity().findViewById(R.id.format_bar_button_html);
+                htmlButton.setChecked(false);*/
                 for (ToggleButton button : mTagToggleButtonMap.values()) {
                     button.setChecked(false);
                 }
