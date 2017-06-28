@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.DragEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -80,12 +81,36 @@ public class HotShareEditorActivity extends AppCompatActivity implements EditorF
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_action_bar, menu);
+        return true;
+    }
+
+    @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         menu.add(0, SELECT_IMAGE_MENU_POSITION, 0, getString(R.string.select_image));
         menu.add(0, SELECT_IMAGE_FAIL_MENU_POSITION, 0, getString(R.string.select_image_fail));
         menu.add(0, SELECT_VIDEO_MENU_POSITION, 0, getString(R.string.select_video));
         menu.add(0, SELECT_VIDEO_FAIL_MENU_POSITION, 0, getString(R.string.select_video_fail));
         menu.add(0, SELECT_IMAGE_SLOW_MENU_POSITION, 0, getString(R.string.select_image_slow_network));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.item_ok) {
+            try {
+                Intent data = new Intent();
+                Bundle res = new Bundle();
+                res.putCharSequence("html", mEditorFragment.getContent());
+                data.putExtras(res);
+                setResult(RESULT_OK, data);
+                finish();
+            } catch (EditorFragment.IllegalEditorStateException e) {
+                e.printStackTrace();
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
