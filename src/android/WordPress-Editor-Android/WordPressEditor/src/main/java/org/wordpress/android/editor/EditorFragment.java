@@ -535,10 +535,10 @@ public class EditorFragment extends EditorFragmentAbstract implements View.OnCli
             mTagToggleButtonMap.put(getString(R.string.format_bar_tag_strikethrough), strikethroughButton);
         }
 
-        ToggleButton mediaButton = (ToggleButton) view.findViewById(R.id.format_bar_button_media);
+        /*ToggleButton mediaButton = (ToggleButton) view.findViewById(R.id.format_bar_button_media);
         mTagToggleButtonMap.put(TAG_FORMAT_BAR_BUTTON_MEDIA, mediaButton);
 
-        registerForContextMenu(mediaButton);
+        registerForContextMenu(mediaButton);*/
 
         ToggleButton linkButton = (ToggleButton) view.findViewById(R.id.format_bar_button_link);
         mTagToggleButtonMap.put(TAG_FORMAT_BAR_BUTTON_LINK, linkButton);
@@ -763,7 +763,7 @@ public class EditorFragment extends EditorFragmentAbstract implements View.OnCli
         int id = v.getId();
         /*if (id == R.id.format_bar_button_html) {
             checkForFailedUploadAndSwitchToHtmlMode((ToggleButton) v);
-        } else*/ if (id == R.id.format_bar_button_media) {
+        } else if (id == R.id.format_bar_button_media) {
             mEditorFragmentListener.onTrackableEvent(TrackableEvent.MEDIA_BUTTON_TAPPED);
             ((ToggleButton) v).setChecked(false);
 
@@ -778,7 +778,7 @@ public class EditorFragment extends EditorFragmentAbstract implements View.OnCli
                 mEditorFragmentListener.onAddMediaClicked();
                 getActivity().openContextMenu(mTagToggleButtonMap.get(TAG_FORMAT_BAR_BUTTON_MEDIA));
             }
-        } else if (id == R.id.format_bar_button_link) {
+        } else*/ if (id == R.id.format_bar_button_link) {
             if (!((ToggleButton) v).isChecked()) {
                 // The link button was checked when it was pressed; remove the current link
                 mWebView.execJavaScriptFromString("ZSSEditor.unlink();");

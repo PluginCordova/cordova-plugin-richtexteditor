@@ -25,7 +25,7 @@
         android:orientation="horizontal"
         tools:ignore="RtlHardcoded">
 
-        <LinearLayout
+        <!--<LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -37,7 +37,7 @@
                 android:layout_height="match_parent"
                 android:contentDescription="@string/format_bar_description_media"
                 android:background="@drawable/format_bar_button_media_selector"/>
-        </LinearLayout>
+        </LinearLayout>-->
 
         <LinearLayout
             android:layout_width="0dp"

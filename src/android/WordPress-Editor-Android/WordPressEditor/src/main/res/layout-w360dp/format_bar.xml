@@ -32,13 +32,13 @@
             android:orientation="horizontal"
             tools:ignore="RtlHardcoded">
 
-            <org.wordpress.android.editor.RippleToggleButton
+            <!--<org.wordpress.android.editor.RippleToggleButton
                 android:id="@+id/format_bar_button_media"
                 style="@style/FormatBarButton"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:contentDescription="@string/format_bar_description_media"
-                android:background="@drawable/format_bar_button_media_selector"/>
+                android:background="@drawable/format_bar_button_media_selector"/>-->
 
             <org.wordpress.android.editor.RippleToggleButton
                 android:id="@+id/format_bar_button_bold"

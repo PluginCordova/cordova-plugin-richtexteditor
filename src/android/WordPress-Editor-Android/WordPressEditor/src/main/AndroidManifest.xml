@@ -5,7 +5,7 @@
     <application>
         <activity android:name=".legacy.EditLinkActivity" />
         <activity android:name=".HotShareEditorActivity"
-            android:label="HotShare Text Editor"
+            android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat.Light"></activity>
     </application>
 
