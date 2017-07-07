@@ -21,13 +21,13 @@
     <string name="stop_upload_dialog_title">停止上传?</string>
     <string name="stop_upload_button">停止上传</string>
 
-    <string name="format_bar_tag_bold" translatable="false">黑体</string>
-    <string name="format_bar_tag_italic" translatable="false">斜体</string>
-    <string name="format_bar_tag_blockquote" translatable="false">引用</string>
-    <string name="format_bar_tag_unorderedList" translatable="false">无序列表</string>
-    <string name="format_bar_tag_orderedList" translatable="false">有序列表</string>
-    <string name="format_bar_tag_strikethrough" translatable="false">删除线</string>
-    <string name="format_bar_tag_link" translatable="false">链接</string>
+    <string name="format_bar_tag_bold" translatable="false">bold</string>
+    <string name="format_bar_tag_italic" translatable="false">italic</string>
+    <string name="format_bar_tag_blockquote" translatable="false">blockquote</string>
+    <string name="format_bar_tag_unorderedList" translatable="false">unorderedList</string>
+    <string name="format_bar_tag_orderedList" translatable="false">orderedList</string>
+    <string name="format_bar_tag_strikethrough" translatable="false">strikeThrough</string>
+    <string name="format_bar_tag_link" translatable="false">link</string>
 
     <!-- link view -->
     <string name="link_enter_url">链接地址</string>
