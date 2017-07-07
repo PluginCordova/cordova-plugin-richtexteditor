@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">编辑器</string>
+    <string name="editor_app_name">编辑器</string>
     <string name="post_settings">设置</string>
     <string name="post_content">内容</string>
     <string name="post_title">标题</string>
