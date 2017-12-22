@@ -10,7 +10,7 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.app.richeditor.R;
+import org.hotshare.everywhere.R;
 
 public class RichEditorActivity extends AppCompatActivity {
 
