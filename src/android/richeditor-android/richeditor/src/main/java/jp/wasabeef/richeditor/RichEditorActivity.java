@@ -15,7 +15,7 @@ import android.content.res.ColorStateList;
 import android.support.v4.graphics.drawable.DrawableCompat;
 
 
-import com.app.richeditor.R;
+import org.hotshare.everywhere.R;
 
 
 public class RichEditorActivity extends AppCompatActivity {
