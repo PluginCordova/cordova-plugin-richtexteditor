@@ -35,8 +35,6 @@ body {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  padding-top: 15px;
-  padding-bottom: 15px;
 }
 
 #editor[placeholder]:empty:not(:focus):before {
