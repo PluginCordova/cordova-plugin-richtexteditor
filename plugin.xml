@@ -165,6 +165,7 @@
             </activity>
         </config-file>
 
+        <source-file src="src/android/richeditor-android/build-richeditor.gradle" target-dir="src/.." />
         <framework src="src/android/hotshare_editor.gradle" custom="true" type="gradleReference" />
         <framework src="com.android.support:appcompat-v7:23.4.0" />
 
