@@ -301,6 +301,222 @@ RE.removeFormat = function() {
     document.execCommand('removeFormat', false, null);
 }
 
+
+
+
+
+
+
+RE.closerParentNodeWithNameRelativeToNode = function(nodeName, referenceNode) {
+    nodeName = nodeName.toUpperCase();
+
+    var parentNode = null;
+    var currentNode = referenceNode;
+
+    while (currentNode) {
+
+        if (currentNode.nodeName == document.body.nodeName) {
+            break;
+        }
+
+        if (currentNode.nodeName == nodeName
+            && currentNode.nodeType == document.ELEMENT_NODE) {
+            parentNode = currentNode;
+            break;
+        }
+        currentNode = currentNode.parentElement;
+    }
+
+    return parentNode;
+};
+
+
+
+RE.findParentContenteditableDiv = function() {
+    var parentNode = null;
+    var selection = window.getSelection();
+    if (selection.rangeCount < 1) {
+        return null;
+    }
+    var range = selection.getRangeAt(0).cloneRange();
+
+    var referenceNode = RE.closerParentNodeWithNameRelativeToNode('div', range.commonAncestorContainer);
+
+    while (referenceNode.parentNode.nodeName != NodeName.BODY) {
+        referenceNode = RE.closerParentNodeWithNameRelativeToNode('div', referenceNode.parentNode);
+    }
+
+    return referenceNode;
+};
+
+RE.giveFocusToElement = function(element, offset) {
+    offset = typeof offset !== 'undefined' ? offset : 0;
+
+    var range = document.createRange();
+    range.setStart(element, offset);
+    range.setEnd(element, offset);
+
+    var selection = document.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+};
+
+RE.resetSelectionOnField = function(fieldId, offset) {
+    var query = "div#" + fieldId;
+    var field = document.querySelector(query);
+
+    RE.giveFocusToElement(field, offset);
+};
+
+RE.getFocusedField = function() {
+    //var currentField = $(RE.findParentContenteditableDiv());
+    var currentField = RE.findParentContenteditableDiv();
+    var currentFieldId;
+
+    if (currentField) {
+        //currentFieldId = currentField.attr('id');
+        currentFieldId = currentField.id;
+        console.log("currentFieldId="+currentFieldId);
+    }
+
+    if (!currentFieldId) {
+        RE.resetSelectionOnField('editor');
+        currentFieldId = 'editor';
+    }
+
+    return this.editableFields[currentFieldId];
+};
+
+RE.sendEnabledStyles = function(e) {
+
+    var items = [];
+
+    var focusedField = RE.getFocusedField();
+
+    if (!focusedField.hasNoStyle) {
+        // Find all relevant parent tags
+        var parentTags = ZSSEditor.parentTags();
+
+        if (parentTags != null) {
+            for (var i = 0; i < parentTags.length; i++) {
+                var currentNode = parentTags[i];
+
+                if (currentNode.nodeName.toLowerCase() == 'a') {
+                    ZSSEditor.currentEditingLink = currentNode;
+
+                    var title = encodeURIComponent(currentNode.text);
+                    var href = encodeURIComponent(currentNode.href);
+
+                    items.push('link-title:' + title);
+                    items.push('link:' + href);
+                } else if (currentNode.nodeName == NodeName.BLOCKQUOTE) {
+                    items.push('blockquote');
+                }
+            }
+        }
+
+        if (ZSSEditor.isCommandEnabled('bold')) {
+            items.push('bold');
+        }
+        if (ZSSEditor.isCommandEnabled('createLink')) {
+            items.push('createLink');
+        }
+        if (ZSSEditor.isCommandEnabled('italic')) {
+            items.push('italic');
+        }
+        if (ZSSEditor.isCommandEnabled('subscript')) {
+            items.push('subscript');
+        }
+        if (ZSSEditor.isCommandEnabled('superscript')) {
+            items.push('superscript');
+        }
+        if (ZSSEditor.isCommandEnabled('strikeThrough')) {
+            items.push('strikeThrough');
+        }
+        if (ZSSEditor.isCommandEnabled('underline')) {
+            var isUnderlined = false;
+
+            // DRM: 'underline' gets highlighted if it's inside of a link... so we need a special test
+            // in that case.
+            if (!ZSSEditor.currentEditingLink) {
+                items.push('underline');
+            }
+        }
+        if (ZSSEditor.isCommandEnabled('insertOrderedList')) {
+            items.push('orderedList');
+        }
+        if (ZSSEditor.isCommandEnabled('insertUnorderedList')) {
+            items.push('unorderedList');
+        }
+        if (ZSSEditor.isCommandEnabled('justifyCenter')) {
+            items.push('justifyCenter');
+        }
+        if (ZSSEditor.isCommandEnabled('justifyFull')) {
+            items.push('justifyFull');
+        }
+        if (ZSSEditor.isCommandEnabled('justifyLeft')) {
+            items.push('justifyLeft');
+        }
+        if (ZSSEditor.isCommandEnabled('justifyRight')) {
+            items.push('justifyRight');
+        }
+        if (ZSSEditor.isCommandEnabled('insertHorizontalRule')) {
+            items.push('horizontalRule');
+        }
+        var formatBlock = document.queryCommandValue('formatBlock');
+        if (formatBlock.length > 0) {
+            items.push(formatBlock);
+        }
+
+        // Use jQuery to figure out those that are not supported
+        if (typeof(e) != "undefined") {
+
+            // The target element
+            var t = $(e.target);
+            var nodeName = e.target.nodeName.toLowerCase();
+
+            // Background Color
+            try
+            {
+                var bgColor = t.css('backgroundColor');
+                if (bgColor && bgColor.length != 0 && bgColor != 'rgba(0, 0, 0, 0)' && bgColor != 'rgb(0, 0, 0)' && bgColor != 'transparent') {
+                    items.push('backgroundColor');
+                }
+            }
+            catch(e)
+            {
+                // DRM: I had to add these stupid try-catch blocks to solve an issue with t.css throwing
+                // exceptions for no reason.
+            }
+
+            // Text Color
+            try
+            {
+                var textColor = t.css('color');
+                if (textColor && textColor.length != 0 && textColor != 'rgba(0, 0, 0, 0)' && textColor != 'rgb(0, 0, 0)' && textColor != 'transparent') {
+                    items.push('textColor');
+                }
+            }
+            catch(e)
+            {
+                // DRM: I had to add these stupid try-catch blocks to solve an issue with t.css throwing
+                // exceptions for no reason.
+            }
+
+            // Image
+            if (nodeName == 'img') {
+                ZSSEditor.currentEditingImage = t;
+                items.push('image:'+t.attr('src'));
+                if (t.attr('alt') !== undefined) {
+                    items.push('image-alt:'+t.attr('alt'));
+                }
+            }
+        }
+    }
+
+    ZSSEditor.stylesCallback(items);
+};
+
 // Event Listeners
 RE.editor.addEventListener("input", RE.callback);
 RE.editor.addEventListener("keyup", function(e) {
