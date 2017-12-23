@@ -13,7 +13,7 @@ import android.widget.ImageButton;
 import android.graphics.drawable.Drawable;
 import android.content.res.ColorStateList;
 import android.support.v4.graphics.drawable.DrawableCompat;
-
+import java.util.List;
 
 import org.hotshare.everywhere.R;
 
@@ -29,6 +29,9 @@ public class RichEditorActivity extends AppCompatActivity {
     DrawableCompat.setTintList(wrappedDrawable, colors);
     return wrappedDrawable;
   }
+  //ColorStateList tint = a.getTintManager().getTintList(a.getResourceId(0, -1));
+  //AppCompatDrawableManager.getTintList();
+
 
   public void changeImageButtonColor(int id, boolean isChanged) {
     ImageButton ivButton = (ImageButton) findViewById(id);
@@ -57,12 +60,142 @@ public class RichEditorActivity extends AppCompatActivity {
     String content = getIntent().getStringExtra(CONTENT_PARAM);
     if (content == null)
         content = "Insert text here...";
-    mEditor.setPlaceholder(content);
+    mEditor.setHtml(content);
 
     //mPreview = (TextView) findViewById(R.id.preview);
     mEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
       @Override public void onTextChange(String text) {
         //mPreview.setText(text);
+      }
+    });
+
+    mEditor.setOnDecorationChangeListener(new RichEditor.OnDecorationStateListener() {
+      private boolean checkIfExist(List<RichEditor.Type> types, RichEditor.Type checkedType) {
+        for (RichEditor.Type type : types) {
+            if (checkedType == type) {
+                return true;
+            }
+        }
+        return false;
+      }
+      @Override public void onStateChangeListener(String text, List<RichEditor.Type> types) {
+        if (checkIfExist(types, RichEditor.Type.BOLD)) {
+            changeImageButtonColor(R.id.action_bold, false);
+        } else {
+            changeImageButtonColor(R.id.action_bold, true);
+        }
+
+        if (checkIfExist(types, RichEditor.Type.ITALIC)) {
+            changeImageButtonColor(R.id.action_italic, false);
+        } else {
+            changeImageButtonColor(R.id.action_italic, true);
+        }
+
+        if (checkIfExist(types, RichEditor.Type.SUBSCRIPT)) {
+            changeImageButtonColor(R.id.action_subscript, false);
+        } else {
+            changeImageButtonColor(R.id.action_subscript, true);
+        }
+
+        if (checkIfExist(types, RichEditor.Type.SUPERSCRIPT)) {
+            changeImageButtonColor(R.id.action_superscript, false);
+        } else {
+            changeImageButtonColor(R.id.action_superscript, true);
+        }
+        if (checkIfExist(types, RichEditor.Type.STRIKETHROUGH)) {
+            changeImageButtonColor(R.id.action_strikethrough, false);
+        } else {
+            changeImageButtonColor(R.id.action_strikethrough, true);
+        }
+
+        if (checkIfExist(types, RichEditor.Type.UNDERLINE)) {
+            changeImageButtonColor(R.id.action_underline, false);
+        } else {
+            changeImageButtonColor(R.id.action_underline, true);
+        }
+
+        if (checkIfExist(types, RichEditor.Type.H1)) {
+            changeImageButtonColor(R.id.action_heading1, false);
+        } else {
+            changeImageButtonColor(R.id.action_heading1, true);
+        }
+
+        if (checkIfExist(types, RichEditor.Type.H2)) {
+            changeImageButtonColor(R.id.action_heading2, false);
+        } else {
+            changeImageButtonColor(R.id.action_heading2, true);
+        }
+
+        if (checkIfExist(types, RichEditor.Type.H3)) {
+            changeImageButtonColor(R.id.action_heading3, false);
+        } else {
+            changeImageButtonColor(R.id.action_heading3, true);
+        }
+
+        if (checkIfExist(types, RichEditor.Type.H4)) {
+            changeImageButtonColor(R.id.action_heading4, false);
+        } else {
+            changeImageButtonColor(R.id.action_heading4, true);
+        }
+        if (checkIfExist(types, RichEditor.Type.H5)) {
+            changeImageButtonColor(R.id.action_heading5, false);
+        } else {
+            changeImageButtonColor(R.id.action_heading5, true);
+        }
+
+        if (checkIfExist(types, RichEditor.Type.H6)) {
+            changeImageButtonColor(R.id.action_heading6, false);
+        } else {
+            changeImageButtonColor(R.id.action_heading6, true);
+        }
+
+        if (checkIfExist(types, RichEditor.Type.FORECOLOR)) {
+            changeImageButtonColor(R.id.action_txt_color, false);
+        } else {
+            changeImageButtonColor(R.id.action_txt_color, true);
+        }
+        if (checkIfExist(types, RichEditor.Type.BACKCOLOR)) {
+            changeImageButtonColor(R.id.action_bg_color, false);
+        } else {
+            changeImageButtonColor(R.id.action_bg_color, true);
+        }
+        if (checkIfExist(types, RichEditor.Type.BLOCKQUOTE)) {
+            changeImageButtonColor(R.id.action_blockquote, false);
+        } else {
+            changeImageButtonColor(R.id.action_blockquote, true);
+        }
+
+        if (checkIfExist(types, RichEditor.Type.INSERTORDEREDLIST)) {
+            changeImageButtonColor(R.id.action_insert_numbers, false);
+        } else {
+            changeImageButtonColor(R.id.action_insert_numbers, true);
+        }
+        if (checkIfExist(types, RichEditor.Type.UNORDEREDLIST)) {
+            changeImageButtonColor(R.id.action_insert_bullets, false);
+        } else {
+            changeImageButtonColor(R.id.action_insert_bullets, true);
+        }
+
+        if (checkIfExist(types, RichEditor.Type.JUSTIFYCENTER)) {
+            changeImageButtonColor(R.id.action_align_center, false);
+        } else {
+            changeImageButtonColor(R.id.action_align_center, true);
+        }
+        if (checkIfExist(types, RichEditor.Type.JUSTIFYFULL)) {
+            //changeImageButtonColor(R.id.action_bold, false);
+        } else {
+            //changeImageButtonColor(R.id.action_bold, true);
+        }
+        if (checkIfExist(types, RichEditor.Type.JUSTIFYLEFT)) {
+            changeImageButtonColor(R.id.action_align_left, false);
+        } else {
+            changeImageButtonColor(R.id.action_align_left, true);
+        }
+        if (checkIfExist(types, RichEditor.Type.JUSTIFYRIGHT)) {
+            changeImageButtonColor(R.id.action_align_right, false);
+        } else {
+            changeImageButtonColor(R.id.action_align_right, true);
+        }
       }
     });
 
@@ -135,7 +268,11 @@ public class RichEditorActivity extends AppCompatActivity {
     findViewById(R.id.action_heading1).setOnClickListener(new View.OnClickListener() {
       private boolean isChanged;
       @Override public void onClick(View v) {
-        mEditor.setHeading(1);
+        if (isChanged) {
+            mEditor.setParagraph();
+        } else {
+            mEditor.setHeading(1);
+        }
         changeImageButtonColor(R.id.action_heading1, isChanged);
         isChanged = !isChanged;
       }
@@ -144,7 +281,11 @@ public class RichEditorActivity extends AppCompatActivity {
     findViewById(R.id.action_heading2).setOnClickListener(new View.OnClickListener() {
       private boolean isChanged;
       @Override public void onClick(View v) {
-        mEditor.setHeading(2);
+        if (isChanged) {
+            mEditor.setParagraph();
+        } else {
+            mEditor.setHeading(2);
+        }
         changeImageButtonColor(R.id.action_heading2, isChanged);
         isChanged = !isChanged;
       }
@@ -153,7 +294,11 @@ public class RichEditorActivity extends AppCompatActivity {
     findViewById(R.id.action_heading3).setOnClickListener(new View.OnClickListener() {
       private boolean isChanged;
       @Override public void onClick(View v) {
-        mEditor.setHeading(3);
+        if (isChanged) {
+            mEditor.setParagraph();
+        } else {
+            mEditor.setHeading(3);
+        }
         changeImageButtonColor(R.id.action_heading3, isChanged);
         isChanged = !isChanged;
       }
@@ -162,7 +307,11 @@ public class RichEditorActivity extends AppCompatActivity {
     findViewById(R.id.action_heading4).setOnClickListener(new View.OnClickListener() {
       private boolean isChanged;
       @Override public void onClick(View v) {
-        mEditor.setHeading(4);
+        if (isChanged) {
+            mEditor.setParagraph();
+        } else {
+            mEditor.setHeading(4);
+        }
         changeImageButtonColor(R.id.action_heading4, isChanged);
         isChanged = !isChanged;
       }
@@ -171,7 +320,11 @@ public class RichEditorActivity extends AppCompatActivity {
     findViewById(R.id.action_heading5).setOnClickListener(new View.OnClickListener() {
       private boolean isChanged;
       @Override public void onClick(View v) {
-        mEditor.setHeading(5);
+        if (isChanged) {
+            mEditor.setParagraph();
+        } else {
+            mEditor.setHeading(5);
+        }
         changeImageButtonColor(R.id.action_heading5, isChanged);
         isChanged = !isChanged;
       }
@@ -180,7 +333,11 @@ public class RichEditorActivity extends AppCompatActivity {
     findViewById(R.id.action_heading6).setOnClickListener(new View.OnClickListener() {
       private boolean isChanged;
       @Override public void onClick(View v) {
-        mEditor.setHeading(6);
+        if (isChanged) {
+            mEditor.setParagraph();
+        } else {
+            mEditor.setHeading(6);
+        }
         changeImageButtonColor(R.id.action_heading6, isChanged);
         isChanged = !isChanged;
       }
@@ -254,7 +411,11 @@ public class RichEditorActivity extends AppCompatActivity {
     findViewById(R.id.action_blockquote).setOnClickListener(new View.OnClickListener() {
       private boolean isChanged;
       @Override public void onClick(View v) {
-        mEditor.setBlockquote();
+        if (isChanged) {
+            mEditor.setParagraph();
+        } else {
+            mEditor.setBlockquote();
+        }
         changeImageButtonColor(R.id.action_blockquote, isChanged);
         isChanged = !isChanged;
       }
@@ -281,8 +442,8 @@ public class RichEditorActivity extends AppCompatActivity {
     findViewById(R.id.action_insert_image).setOnClickListener(new View.OnClickListener() {
       private boolean isChanged;
       @Override public void onClick(View v) {
-        changeImageButtonColor(R.id.action_insert_image, isChanged);
-        isChanged = !isChanged;
+        //changeImageButtonColor(R.id.action_insert_image, isChanged);
+        //isChanged = !isChanged;
         mEditor.insertImage("http://www.1honeywan.com/dachshund/image/7.21/7.21_3_thumb.JPG",
             "dachshund");
       }
@@ -291,16 +452,16 @@ public class RichEditorActivity extends AppCompatActivity {
     findViewById(R.id.action_insert_link).setOnClickListener(new View.OnClickListener() {
       private boolean isChanged;
       @Override public void onClick(View v) {
-        changeImageButtonColor(R.id.action_insert_link, isChanged);
-        isChanged = !isChanged;
+        //changeImageButtonColor(R.id.action_insert_link, isChanged);
+        //isChanged = !isChanged;
         mEditor.insertLink("https://github.com/wasabeef", "wasabeef");
       }
     });
     findViewById(R.id.action_insert_checkbox).setOnClickListener(new View.OnClickListener() {
       private boolean isChanged;
       @Override public void onClick(View v) {
-        changeImageButtonColor(R.id.action_insert_checkbox, isChanged);
-        isChanged = !isChanged;
+        //changeImageButtonColor(R.id.action_insert_checkbox, isChanged);
+        //isChanged = !isChanged;
         mEditor.insertTodo();
       }
     });

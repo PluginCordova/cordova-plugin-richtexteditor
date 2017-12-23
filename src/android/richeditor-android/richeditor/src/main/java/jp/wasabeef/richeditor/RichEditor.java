@@ -51,12 +51,15 @@ public class RichEditor extends WebView {
     H4,
     H5,
     H6,
-    ORDEREDLIST,
+    INSERTORDEREDLIST,
     UNORDEREDLIST,
     JUSTIFYCENTER,
     JUSTIFYFULL,
-    JUSTUFYLEFT,
-    JUSTIFYRIGHT
+    JUSTIFYLEFT,
+    JUSTIFYRIGHT,
+    BLOCKQUOTE,
+    FORECOLOR,
+    BACKCOLOR
   }
 
   public interface OnTextChangeListener {
@@ -131,6 +134,7 @@ public class RichEditor extends WebView {
 
   private void stateCheck(String text) {
     String state = text.replaceFirst(STATE_SCHEME, "").toUpperCase(Locale.ENGLISH);
+    Log.v("RichEditor", "stateCheck: "+state);
     //List<Type> types = new ArrayList<>();
     ArrayList<Type> types = new ArrayList<Type>();
     for (Type type : Type.values()) {
@@ -331,6 +335,10 @@ public class RichEditor extends WebView {
 
   public void setHeading(int heading) {
     exec("javascript:RE.setHeading('" + heading + "');");
+  }
+
+  public void setParagraph() {
+    exec("javascript:RE.setParagraph();");
   }
 
   public void setIndent() {

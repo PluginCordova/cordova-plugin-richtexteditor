@@ -24,7 +24,7 @@ RE.currentSelection = {
 
 RE.editor = document.getElementById('editor');
 
-document.addEventListener("selectionchange", function() { RE.backuprange(); });
+document.addEventListener("selectionchange", function() { RE.backuprange();});
 
 // Initializations
 RE.callback = function() {
@@ -100,26 +100,32 @@ RE.redo = function() {
 
 RE.setBold = function() {
     document.execCommand('bold', false, null);
+    RE.enabledEditingItems();
 }
 
 RE.setItalic = function() {
     document.execCommand('italic', false, null);
+    RE.enabledEditingItems();
 }
 
 RE.setSubscript = function() {
     document.execCommand('subscript', false, null);
+    RE.enabledEditingItems();
 }
 
 RE.setSuperscript = function() {
     document.execCommand('superscript', false, null);
+    RE.enabledEditingItems();
 }
 
 RE.setStrikeThrough = function() {
     document.execCommand('strikeThrough', false, null);
+    RE.enabledEditingItems();
 }
 
 RE.setUnderline = function() {
     document.execCommand('underline', false, null);
+    RE.enabledEditingItems();
 }
 
 RE.setBullets = function() {
@@ -150,7 +156,14 @@ RE.setFontSize = function(fontSize){
 
 RE.setHeading = function(heading) {
     document.execCommand('formatBlock', false, '<h'+heading+'>');
+    RE.enabledEditingItems();
 }
+
+RE.setParagraph = function() {
+    document.execCommand('formatBlock', false, '<div>');
+    RE.enabledEditingItems();
+}
+
 
 RE.setIndent = function() {
     document.execCommand('indent', false, null);
@@ -162,14 +175,17 @@ RE.setOutdent = function() {
 
 RE.setJustifyLeft = function() {
     document.execCommand('justifyLeft', false, null);
+    RE.enabledEditingItems();
 }
 
 RE.setJustifyCenter = function() {
     document.execCommand('justifyCenter', false, null);
+    RE.enabledEditingItems();
 }
 
 RE.setJustifyRight = function() {
     document.execCommand('justifyRight', false, null);
+    RE.enabledEditingItems();
 }
 
 RE.setBlockquote = function() {
@@ -255,7 +271,7 @@ RE.enabledEditingItems = function(e) {
         items.push('underline');
     }
     if (document.queryCommandState('insertOrderedList')) {
-        items.push('orderedList');
+        items.push('insertOrderedList');
     }
     if (document.queryCommandState('insertUnorderedList')) {
         items.push('unorderedList');
@@ -274,6 +290,17 @@ RE.enabledEditingItems = function(e) {
     }
     if (document.queryCommandState('insertHorizontalRule')) {
         items.push('horizontalRule');
+    }
+    if (document.queryCommandState('insertHorizontalRule')) {
+        items.push('horizontalRule');
+    }
+    var fontColor = document.queryCommandValue("ForeColor");
+    if (fontColor == 'rgb(255, 0, 0)') {
+        items.push('ForeColor');
+    }
+    var backColor = document.queryCommandValue("BackColor");
+    if (backColor != 'rgba(0, 0, 0, 0)') {
+        items.push('BackColor');
     }
     var formatBlock = document.queryCommandValue('formatBlock');
     if (formatBlock.length > 0) {
@@ -301,6 +328,7 @@ RE.removeFormat = function() {
     document.execCommand('removeFormat', false, null);
 }
 
+
 // Event Listeners
 RE.editor.addEventListener("input", RE.callback);
 RE.editor.addEventListener("keyup", function(e) {
@@ -310,3 +338,9 @@ RE.editor.addEventListener("keyup", function(e) {
     }
 });
 RE.editor.addEventListener("click", RE.enabledEditingItems);
+RE.editor.addEventListener("selectstart", function() {
+    //console.log('editor selectstart event');
+    setTimeout(function() {
+        RE.enabledEditingItems();
+    },100);
+});
