@@ -131,7 +131,8 @@ public class RichEditor extends WebView {
 
   private void stateCheck(String text) {
     String state = text.replaceFirst(STATE_SCHEME, "").toUpperCase(Locale.ENGLISH);
-    List<Type> types = new ArrayList<>();
+    //List<Type> types = new ArrayList<>();
+    ArrayList<Type> types = new ArrayList<Type>();
     for (Type type : Type.values()) {
       if (TextUtils.indexOf(state, type.name()) != -1) {
         types.add(type);
