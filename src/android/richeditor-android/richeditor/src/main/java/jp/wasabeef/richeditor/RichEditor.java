@@ -20,6 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import android.app.Activity;
+
 /**
  * Copyright (C) 2017 Wasabeef
  *
@@ -86,6 +91,7 @@ public class RichEditor extends WebView {
   private OnTextChangeListener mTextChangeListener;
   private OnDecorationStateListener mDecorationStateListener;
   private AfterInitialLoadListener mLoadListener;
+  private CountDownLatch mGetContentCountDownLatch;
 
   public RichEditor(Context context) {
     this(context, null);
@@ -107,6 +113,7 @@ public class RichEditor extends WebView {
     loadUrl(SETUP_HTML);
 
     applyAttributes(context, attrs);
+    mGetContentCountDownLatch = new CountDownLatch(1);
   }
 
   protected EditorWebViewClient createWebviewClient() {
@@ -196,6 +203,32 @@ public class RichEditor extends WebView {
   }
 
   public String getHtml() {
+    return mContents;
+  }
+
+  public String getContent() {
+    if (mGetContentCountDownLatch.getCount() == 0) {
+        mGetContentCountDownLatch = new CountDownLatch(1);
+    }
+
+    // All WebView methods must be called from the UI thread
+    Activity activiy = (Activity)getContext();
+    activiy.runOnUiThread(new Runnable() {
+        @Override
+        public void run() {
+            Log.v("richeditor", "call js RE.callback().");
+            exec("javascript:RE.callback();");
+        }
+    });
+
+    try {
+        Log.v("richeditor", "await : 1");
+        mGetContentCountDownLatch.await(2, TimeUnit.SECONDS);
+        Log.v("richeditor", "await : 2");
+    } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+    }
+    Log.v("richeditor", "mContents="+mContents);
     return mContents;
   }
 
@@ -440,6 +473,10 @@ public class RichEditor extends WebView {
 
       if (TextUtils.indexOf(url, CALLBACK_SCHEME) == 0) {
         callback(decode);
+        if (mGetContentCountDownLatch != null) {
+            Log.v("richeditor", "CALLBACK_SCHEME: "+mGetContentCountDownLatch.getCount());
+            mGetContentCountDownLatch.countDown();
+        }
         return true;
       } else if (TextUtils.indexOf(url, STATE_SCHEME) == 0) {
         stateCheck(decode);

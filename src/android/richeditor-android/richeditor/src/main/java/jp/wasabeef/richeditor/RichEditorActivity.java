@@ -477,12 +477,27 @@ public class RichEditorActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_titlebar_done) {
             try {
-                Intent data = new Intent();
+                new Thread( new Runnable() {
+                    public void run()  {
+                        try  {
+                            Intent data = new Intent();
+                            Bundle res = new Bundle();
+                            //res.putCharSequence("html", mEditor.getHtml());
+                            res.putCharSequence("html", mEditor.getContent());
+                            data.putExtras(res);
+                            setResult(RESULT_OK, data);
+                            finish();
+                        }
+                        catch (Exception ie)  {}
+                    }
+                } ).start();
+                /*Intent data = new Intent();
                 Bundle res = new Bundle();
-                res.putCharSequence("html", mEditor.getHtml());
+                //res.putCharSequence("html", mEditor.getHtml());
+                res.putCharSequence("html", mEditor.getContent());
                 data.putExtras(res);
                 setResult(RESULT_OK, data);
-                finish();
+                finish();*/
             } catch (Exception e) {
               // This will catch any exception, because they are all descended from Exception
               //System.out.println("Error " + e.getMessage());
