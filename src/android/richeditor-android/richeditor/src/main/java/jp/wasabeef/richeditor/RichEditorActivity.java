@@ -47,7 +47,7 @@ public class RichEditorActivity extends AppCompatActivity {
     setContentView(R.layout.richeditor_activity_main);
     mEditor = (RichEditor) findViewById(R.id.editor);
     //mEditor.setEditorHeight(200);
-    mEditor.setEditorFontSize(22);
+    mEditor.setEditorFontSize(18);
     mEditor.setEditorFontColor(Color.BLACK);
     //mEditor.setEditorBackgroundColor(Color.BLUE);
     //mEditor.setBackgroundColor(Color.BLUE);
